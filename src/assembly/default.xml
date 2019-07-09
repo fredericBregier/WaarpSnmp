@@ -37,7 +37,7 @@
         <exclude>${project.build.finalName}*-javadoc.jar</exclude>
       </excludes>
     </fileSet>
-    
+
     <!-- Documentation (API) -->
     <fileSet>
       <directory>target/api</directory>
