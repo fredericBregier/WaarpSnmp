@@ -1,27 +1,20 @@
 /**
  * This file is part of Waarp Project.
- * 
- * Copyright 2009, Frederic Bregier, and individual contributors by the @author
- * tags. See the COPYRIGHT.txt in the distribution for a full listing of
- * individual contributors.
- * 
- * All Waarp Project is free software: you can redistribute it and/or
- * modify it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or (at your
- * option) any later version.
- * 
- * Waarp is distributed in the hope that it will be useful, but WITHOUT ANY
- * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
- * A PARTICULAR PURPOSE. See the GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * Waarp. If not, see <http://www.gnu.org/licenses/>.
+ * <p>
+ * Copyright 2009, Frederic Bregier, and individual contributors by the @author tags. See the COPYRIGHT.txt in the
+ * distribution for a full listing of individual contributors.
+ * <p>
+ * All Waarp Project is free software: you can redistribute it and/or modify it under the terms of the GNU General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ * <p>
+ * Waarp is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ * <p>
+ * You should have received a copy of the GNU General Public License along with Waarp. If not, see
+ * <http://www.gnu.org/licenses/>.
  */
 package org.waarp.snmp.test;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.snmp4j.CommunityTarget;
 import org.snmp4j.PDU;
@@ -42,11 +35,15 @@ import org.snmp4j.util.DefaultPDUFactory;
 import org.snmp4j.util.TableEvent;
 import org.snmp4j.util.TableUtils;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Simple SNMP Client (for testing purpose)
- * 
+ *
  * @author Frederic Bregier
- * 
+ *
  */
 public class WaarpSimpleSnmpClient {
 
@@ -71,6 +68,10 @@ public class WaarpSimpleSnmpClient {
         }
     }
 
+    public static String extractSingleString(ResponseEvent event) {
+        return event.getResponse().get(0).getVariable().toString();
+    }
+
     // Since snmp4j relies on asynch req/resp we need a listener
     // for responses which should be closed
     public void stop() throws IOException {
@@ -81,7 +82,7 @@ public class WaarpSimpleSnmpClient {
      * Start the Snmp session. If you forget the listen() method you will not
      * get any answers because the communication is asynchronous and the
      * listen() method listens for answers.
-     * 
+     *
      * @throws IOException
      **/
     private void start() throws IOException {
@@ -96,36 +97,38 @@ public class WaarpSimpleSnmpClient {
     /**
      * Method which takes a single OID and returns the response from the agent
      * as a String.
-     * 
+     *
      * @param oid
      * @return String
      * @throws IOException
      **/
     public String getAsString(OID oid) throws IOException {
         ResponseEvent event = get(new OID[] {
-                oid });
+                oid
+        });
         return event.getResponse().get(0).getVariable().toString();
     }
 
     /**
      * This method is capable of handling multiple OIDs linked with a listener
-     * 
+     *
      * @param oids
      * @param listener
-     * 
+     *
      * @throws IOException
      **/
     public void getAsString(OID oids, ResponseListener listener) {
         try {
             snmp.send(getPDU(new OID[] {
-                    oids }), getTarget(), null, listener);
+                    oids
+            }), getTarget(), null, listener);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
     /**
-     * 
+     *
      * @param oids
      * @return A PDU from oids
      */
@@ -141,7 +144,7 @@ public class WaarpSimpleSnmpClient {
 
     /**
      * This method is capable of handling multiple OIDs
-     * 
+     *
      * @param oids
      * @return ResponseEvent
      * @throws IOException
@@ -157,7 +160,7 @@ public class WaarpSimpleSnmpClient {
     /**
      * This method returns a Target, which contains information about where the
      * data should be fetched and how.
-     * 
+     *
      * @return
      **/
     private Target getTarget() {
@@ -195,10 +198,6 @@ public class WaarpSimpleSnmpClient {
             }
         }
         return list;
-    }
-
-    public static String extractSingleString(ResponseEvent event) {
-        return event.getResponse().get(0).getVariable().toString();
     }
 
 }

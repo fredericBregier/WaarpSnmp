@@ -1,26 +1,20 @@
 /**
  * This file is part of Waarp Project.
- * 
- * Copyright 2009, Frederic Bregier, and individual contributors by the @author
- * tags. See the COPYRIGHT.txt in the distribution for a full listing of
- * individual contributors.
- * 
- * All Waarp Project is free software: you can redistribute it and/or
- * modify it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or (at your
- * option) any later version.
- * 
- * Waarp is distributed in the hope that it will be useful, but WITHOUT ANY
- * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
- * A PARTICULAR PURPOSE. See the GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * Waarp. If not, see <http://www.gnu.org/licenses/>.
+ * <p>
+ * Copyright 2009, Frederic Bregier, and individual contributors by the @author tags. See the COPYRIGHT.txt in the
+ * distribution for a full listing of individual contributors.
+ * <p>
+ * All Waarp Project is free software: you can redistribute it and/or modify it under the terms of the GNU General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ * <p>
+ * Waarp is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ * <p>
+ * You should have received a copy of the GNU General Public License along with Waarp. If not, see
+ * <http://www.gnu.org/licenses/>.
  */
 package org.waarp.snmp.test;
-
-import java.io.File;
-import java.io.IOException;
 
 import org.snmp4j.event.ResponseEvent;
 import org.snmp4j.event.ResponseListener;
@@ -32,11 +26,14 @@ import org.waarp.snmp.WaarpMOFactory;
 import org.waarp.snmp.WaarpSnmpAgent;
 import org.waarp.snmp.utils.WaarpMOScalar;
 
+import java.io.File;
+import java.io.IOException;
+
 /**
  * Test class for Agent and simple Client
- * 
+ *
  * @author Frederic Bregier
- * 
+ *
  */
 public class WaarpTestSnmpClientAgent {
     static WaarpSnmpAgent agent;
@@ -70,7 +67,7 @@ public class WaarpTestSnmpClientAgent {
         WaarpPrivateMonitor monitor = new WaarpPrivateMonitor();
         // Create a Mib
         test = new WaarpImplPrivateMib("Waarp Test SNMP", 6666, 66666, 66,
-                "F. Bregier", "Waarp Test SNMP V1.0", "Paris, France", 72);
+                                       "F. Bregier", "Waarp Test SNMP V1.0", "Paris, France", 72);
         // Set the default VariableFactory
         WaarpMOFactory.setFactory(new WaarpTestVariableFactory());
         // Create the agent associated with the monitor and Mib
@@ -98,7 +95,7 @@ public class WaarpTestSnmpClientAgent {
      */
     public static void verifySysDescr() throws IOException {
         assertEquals(test.textualSysDecr,
-                client.getAsString(SnmpConstants.sysDescr));
+                     client.getAsString(SnmpConstants.sysDescr));
     }
 
     /**
@@ -108,7 +105,7 @@ public class WaarpTestSnmpClientAgent {
         for (WaarpMOScalar scalar : test.rowInfo.getRow()) {
             try {
                 System.out.println("Read " + scalar.getID() + ":" +
-                        client.getAsString(scalar.getID()));
+                                   client.getAsString(scalar.getID()));
             } catch (IOException e) {
                 System.err.println(scalar.getID() + ":" + e.getMessage());
                 continue;

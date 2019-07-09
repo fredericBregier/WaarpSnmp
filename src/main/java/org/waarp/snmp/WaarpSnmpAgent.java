@@ -1,27 +1,20 @@
 /**
  * This file is part of Waarp Project.
- * 
- * Copyright 2009, Frederic Bregier, and individual contributors by the @author
- * tags. See the COPYRIGHT.txt in the distribution for a full listing of
- * individual contributors.
- * 
- * All Waarp Project is free software: you can redistribute it and/or
- * modify it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or (at your
- * option) any later version.
- * 
- * Waarp is distributed in the hope that it will be useful, but WITHOUT ANY
- * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
- * A PARTICULAR PURPOSE. See the GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * Waarp. If not, see <http://www.gnu.org/licenses/>.
+ * <p>
+ * Copyright 2009, Frederic Bregier, and individual contributors by the @author tags. See the COPYRIGHT.txt in the
+ * distribution for a full listing of individual contributors.
+ * <p>
+ * All Waarp Project is free software: you can redistribute it and/or modify it under the terms of the GNU General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ * <p>
+ * Waarp is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ * <p>
+ * You should have received a copy of the GNU General Public License along with Waarp. If not, see
+ * <http://www.gnu.org/licenses/>.
  */
 package org.waarp.snmp;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.List;
 
 import org.snmp4j.TransportMapping;
 import org.snmp4j.agent.BaseAgent;
@@ -31,11 +24,11 @@ import org.snmp4j.agent.MOGroup;
 import org.snmp4j.agent.mo.snmp.RowStatus;
 import org.snmp4j.agent.mo.snmp.SNMPv2MIB;
 import org.snmp4j.agent.mo.snmp.SnmpCommunityMIB;
+import org.snmp4j.agent.mo.snmp.SnmpCommunityMIB.SnmpCommunityEntryRow;
 import org.snmp4j.agent.mo.snmp.SnmpNotificationMIB;
 import org.snmp4j.agent.mo.snmp.SnmpTargetMIB;
 import org.snmp4j.agent.mo.snmp.StorageType;
 import org.snmp4j.agent.mo.snmp.VacmMIB;
-import org.snmp4j.agent.mo.snmp.SnmpCommunityMIB.SnmpCommunityEntryRow;
 import org.snmp4j.agent.security.MutableVACM;
 import org.snmp4j.mp.MPv3;
 import org.snmp4j.mp.MessageProcessingModel;
@@ -58,15 +51,19 @@ import org.waarp.common.logging.WaarpLogger;
 import org.waarp.common.logging.WaarpLoggerFactory;
 import org.waarp.snmp.SnmpConfiguration.TargetElement;
 import org.waarp.snmp.interf.WaarpInterfaceMib;
-import org.waarp.snmp.interf.WaarpInterfaceMonitor;
 import org.waarp.snmp.interf.WaarpInterfaceMib.TrapLevel;
+import org.waarp.snmp.interf.WaarpInterfaceMonitor;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
 
 /**
  * This Agent contains some functionalities for running a version 2c and 3 of
  * SNMP agent.
- * 
+ *
  * @author Frederic Bregier
- * 
+ *
  */
 public class WaarpSnmpAgent extends BaseAgent {
     /**
@@ -74,28 +71,18 @@ public class WaarpSnmpAgent extends BaseAgent {
      */
     private static WaarpLogger logger = WaarpLoggerFactory
             .getLogger(WaarpSnmpAgent.class);
-
-    private String[] address = new String[] {
-            SnmpConfiguration.DEFAULTADDRESS };
-
-    private int nbThread = 4;
-
-    private boolean isFilterAccessEnabled = false;
-
-    private boolean useTrap = true;
-
-    private int trapLevel = 0;
-
-    private List<UsmUser> listUsmUser;
-
-    private List<TargetElement> listTargetElements;
-
-    private boolean hasV2 = false;
-
-    private boolean hasV3 = false;
-
     private final long systemTimeStart = System.currentTimeMillis();
-
+    private String[] address = new String[] {
+            SnmpConfiguration.DEFAULTADDRESS
+    };
+    private int nbThread = 4;
+    private boolean isFilterAccessEnabled = false;
+    private boolean useTrap = true;
+    private int trapLevel = 0;
+    private List<UsmUser> listUsmUser;
+    private List<TargetElement> listTargetElements;
+    private boolean hasV2 = false;
+    private boolean hasV3 = false;
     private WorkerPool workerPool = null;
     /**
      * The associated monitor with this Agent
@@ -107,41 +94,41 @@ public class WaarpSnmpAgent extends BaseAgent {
     private WaarpInterfaceMib mib;
 
     /**
-     * 
+     *
      * @param configurationFile
      *            XML format
      * @param monitor
      *            the associated monitor
      * @param mib
      *            the associated MIB
-     * 
+     *
      * @throws IllegalArgumentException
      */
     public WaarpSnmpAgent(File configurationFile, WaarpInterfaceMonitor monitor,
-            WaarpInterfaceMib mib) throws IllegalArgumentException {
+                          WaarpInterfaceMib mib) throws IllegalArgumentException {
         /**
          * Creates a base agent with boot-counter, config file, and a
          * CommandProcessor for processing SNMP requests.
-         * 
+         *
          * Parameters:
-         * 
+         *
          * These files does not exist and are not used but has to be specified.
          * Read snmp4j docs for more info
-         * 
+         *
          * "bootCounterFile" - a file with serialized boot-counter information
          * (read/write). If the file does not exist it is created on shutdown of
          * the agent.
-         * 
+         *
          * "configFile" - a file with serialized configuration information
          * (read/write). If the file does not exist it is created on shutdown of
          * the agent.
-         * 
+         *
          * "commandProcessor" - the CommandProcessor instance that handles the
          * SNMP requests.
          */
         super(new File(configurationFile.getParentFile(), "dummyConf.agent"),
-                new File(configurationFile.getParentFile(),
-                        "dummyBootCounter.agent"), new CommandProcessor(
+              new File(configurationFile.getParentFile(),
+                       "dummyBootCounter.agent"), new CommandProcessor(
                         new OctetString(MPv3.createLocalEngineID())));
         if (!SnmpConfiguration.setConfigurationFromXml(configurationFile)) {
             throw new IllegalArgumentException("Cannot load configuration");
@@ -157,7 +144,7 @@ public class WaarpSnmpAgent extends BaseAgent {
         this.hasV3 = SnmpConfiguration.hasV3;
 
         logger.debug("SNMP Configuration loaded: " + this.address[0] + ":" +
-                this.nbThread);
+                     this.nbThread);
         this.workerPool = ThreadPool.create("SnmpRequestPool", nbThread);
         agent.setWorkerPool(this.workerPool);
         this.setMonitor(monitor);
@@ -174,6 +161,13 @@ public class WaarpSnmpAgent extends BaseAgent {
     }
 
     /**
+     * @param monitor the monitor to set
+     */
+    private void setMonitor(WaarpInterfaceMonitor monitor) {
+        this.monitor = monitor;
+    }
+
+    /**
      * @return the mib
      */
     public WaarpInterfaceMib getMib() {
@@ -181,7 +175,14 @@ public class WaarpSnmpAgent extends BaseAgent {
     }
 
     /**
-     * 
+     * @param mib the mib to set
+     */
+    private void setMib(WaarpInterfaceMib mib) {
+        this.mib = mib;
+    }
+
+    /**
+     *
      * @return the uptime in ms
      */
     public long getUptime() {
@@ -189,7 +190,7 @@ public class WaarpSnmpAgent extends BaseAgent {
     }
 
     /**
-     * 
+     *
      * @return the uptime but in System time in ms
      */
     public long getUptimeSystemTime() {
@@ -217,7 +218,7 @@ public class WaarpSnmpAgent extends BaseAgent {
     }
 
     /**
-     * 
+     *
      * @param moGroup
      */
     public void unregisterManagedObject(MOGroup moGroup) {
@@ -233,7 +234,7 @@ public class WaarpSnmpAgent extends BaseAgent {
         for (UsmUser userlist : listUsmUser) {
             logger.debug("User: " + userlist);
             usm.addUser(userlist.getSecurityName(), usm.getLocalEngineID(),
-                    userlist);
+                        userlist);
         }
         /*
          * Example user = new UsmUser(new OctetString("TEST"), AuthSHA.ID, new
@@ -263,7 +264,7 @@ public class WaarpSnmpAgent extends BaseAgent {
          * OctetString("SHAAES256AuthPassword"), PrivAES256.ID, new
          * OctetString("SHAAES256PrivPassword"));
          * usm.addUser(user.getSecurityName(), usm.getLocalEngineID(), user);
-         * 
+         *
          * user = new UsmUser(new OctetString("MD5AES128"), AuthMD5.ID, new
          * OctetString("MD5AES128AuthPassword"), PrivAES128.ID, new
          * OctetString("MD5AES128PrivPassword"));
@@ -286,18 +287,18 @@ public class WaarpSnmpAgent extends BaseAgent {
      * Adds initial notification targets and filters.
      */
     protected void addNotificationTargets(SnmpTargetMIB targetMIB,
-            SnmpNotificationMIB notificationMIB) {
+                                          SnmpNotificationMIB notificationMIB) {
         targetMIB.addDefaultTDomains();
 
         for (TargetElement element : listTargetElements) {
             logger.debug("AddTarget: " + element);
             targetMIB.addTargetAddress(element.name, element.transportDomain,
-                    element.address, element.timeout, element.retries,
-                    element.tagList, element.params, element.storageType);
+                                       element.address, element.timeout, element.retries,
+                                       element.tagList, element.params, element.storageType);
         }
         /**
          * Example
-         * 
+         *
          * targetMIB.addTargetAddress(new OctetString("notificationV2c"),
          * TransportDomains.transportDomainUdpIpv4, new OctetString(new
          * UdpAddress("127.0.0.1/162").getValue()), 200, 1, new
@@ -312,103 +313,103 @@ public class WaarpSnmpAgent extends BaseAgent {
         logger.debug("HasV2: " + hasV2 + " HasV3: " + hasV3);
         if (hasV2) {
             targetMIB.addTargetParams(new OctetString(SnmpConfiguration.V2C),
-                    MessageProcessingModel.MPv2c,
-                    SecurityModel.SECURITY_MODEL_SNMPv2c, new OctetString(
+                                      MessageProcessingModel.MPv2c,
+                                      SecurityModel.SECURITY_MODEL_SNMPv2c, new OctetString(
                             "cpublic"), SecurityLevel.AUTH_PRIV,
-                    StorageType.permanent);
+                                      StorageType.permanent);
         }
         if (hasV3) {
             targetMIB.addTargetParams(new OctetString(
-                    SnmpConfiguration.V3NOTIFY), MessageProcessingModel.MPv3,
-                    SecurityModel.SECURITY_MODEL_USM, new OctetString(
+                                              SnmpConfiguration.V3NOTIFY), MessageProcessingModel.MPv3,
+                                      SecurityModel.SECURITY_MODEL_USM, new OctetString(
                             "v3notify"), SecurityLevel.NOAUTH_NOPRIV,
-                    StorageType.permanent);
+                                      StorageType.permanent);
         }
         int trapOrInform = SnmpNotificationMIB.SnmpNotifyTypeEnum.inform;
         if (useTrap) {
             trapOrInform = SnmpNotificationMIB.SnmpNotifyTypeEnum.trap;
         }
         notificationMIB.addNotifyEntry(new OctetString("default"),
-                new OctetString(SnmpConfiguration.NOTIFY), trapOrInform,
-                StorageType.permanent);
+                                       new OctetString(SnmpConfiguration.NOTIFY), trapOrInform,
+                                       StorageType.permanent);
     }
 
     /**
      * Minimal View based Access Control
-     * 
+     *
      * http://www.faqs.org/rfcs/rfc2575.html
      */
     protected void addViews(VacmMIB vacm) {
         vacm.addGroup(SecurityModel.SECURITY_MODEL_SNMPv1, new OctetString(
-                "cpublic"), new OctetString("v1v2group"),
-                StorageType.nonVolatile);
+                              "cpublic"), new OctetString("v1v2group"),
+                      StorageType.nonVolatile);
         vacm.addGroup(SecurityModel.SECURITY_MODEL_SNMPv2c, new OctetString(
-                "cpublic"), new OctetString("v1v2group"),
-                StorageType.nonVolatile);
+                              "cpublic"), new OctetString("v1v2group"),
+                      StorageType.nonVolatile);
         vacm.addGroup(SecurityModel.SECURITY_MODEL_USM, new OctetString(
-                "v3notify"), new OctetString("v3group"),
-                StorageType.nonVolatile);
+                              "v3notify"), new OctetString("v3group"),
+                      StorageType.nonVolatile);
 
         for (UsmUser user : listUsmUser) {
             logger.debug("Groups: " + user.getSecurityName() + " Restricted? " +
-                    (user.getPrivacyProtocol() == null));
+                         (user.getPrivacyProtocol() == null));
             if (user.getPrivacyProtocol() == null) {
                 vacm.addGroup(SecurityModel.SECURITY_MODEL_USM,
-                        new OctetString(user.getSecurityName()),
-                        new OctetString("v3restricted"),
-                        StorageType.nonVolatile);
+                              new OctetString(user.getSecurityName()),
+                              new OctetString("v3restricted"),
+                              StorageType.nonVolatile);
             } else {
                 vacm.addGroup(SecurityModel.SECURITY_MODEL_USM,
-                        new OctetString(user.getSecurityName()),
-                        new OctetString("v3group"), StorageType.nonVolatile);
+                              new OctetString(user.getSecurityName()),
+                              new OctetString("v3group"), StorageType.nonVolatile);
             }
         }
 
         vacm.addAccess(new OctetString("v1v2group"), new OctetString("public"),
-                SecurityModel.SECURITY_MODEL_ANY, SecurityLevel.NOAUTH_NOPRIV,
-                MutableVACM.VACM_MATCH_EXACT, new OctetString("fullReadView"),
-                new OctetString("fullWriteView"), new OctetString(
+                       SecurityModel.SECURITY_MODEL_ANY, SecurityLevel.NOAUTH_NOPRIV,
+                       MutableVACM.VACM_MATCH_EXACT, new OctetString("fullReadView"),
+                       new OctetString("fullWriteView"), new OctetString(
                         "fullNotifyView"), StorageType.nonVolatile);
         vacm.addAccess(new OctetString("v3group"), new OctetString(),
-                SecurityModel.SECURITY_MODEL_USM, SecurityLevel.AUTH_PRIV,
-                MutableVACM.VACM_MATCH_EXACT, new OctetString("fullReadView"),
-                new OctetString("fullWriteView"), new OctetString(
+                       SecurityModel.SECURITY_MODEL_USM, SecurityLevel.AUTH_PRIV,
+                       MutableVACM.VACM_MATCH_EXACT, new OctetString("fullReadView"),
+                       new OctetString("fullWriteView"), new OctetString(
                         "fullNotifyView"), StorageType.nonVolatile);
         vacm.addAccess(new OctetString("v3restricted"), new OctetString(),
-                SecurityModel.SECURITY_MODEL_USM, SecurityLevel.NOAUTH_NOPRIV,
-                MutableVACM.VACM_MATCH_EXACT, new OctetString(
+                       SecurityModel.SECURITY_MODEL_USM, SecurityLevel.NOAUTH_NOPRIV,
+                       MutableVACM.VACM_MATCH_EXACT, new OctetString(
                         "restrictedReadView"), new OctetString(
                         "restrictedWriteView"), new OctetString(
                         "restrictedNotifyView"), StorageType.nonVolatile);
 
         vacm.addViewTreeFamily(new OctetString("fullReadView"), new OID("1.3"),
-                new OctetString(), VacmMIB.vacmViewIncluded,
-                StorageType.nonVolatile);
+                               new OctetString(), VacmMIB.vacmViewIncluded,
+                               StorageType.nonVolatile);
         vacm.addViewTreeFamily(new OctetString("fullWriteView"),
-                new OID("1.3"), new OctetString(), VacmMIB.vacmViewIncluded,
-                StorageType.nonVolatile);
+                               new OID("1.3"), new OctetString(), VacmMIB.vacmViewIncluded,
+                               StorageType.nonVolatile);
         vacm.addViewTreeFamily(new OctetString("fullNotifyView"),
-                new OID("1.3"), new OctetString(), VacmMIB.vacmViewIncluded,
-                StorageType.nonVolatile);
+                               new OID("1.3"), new OctetString(), VacmMIB.vacmViewIncluded,
+                               StorageType.nonVolatile);
 
         vacm.addViewTreeFamily(new OctetString("restrictedReadView"), new OID(
-                "1.3.6.1.2"), new OctetString(), VacmMIB.vacmViewIncluded,
-                StorageType.nonVolatile);
+                                       "1.3.6.1.2"), new OctetString(), VacmMIB.vacmViewIncluded,
+                               StorageType.nonVolatile);
         vacm.addViewTreeFamily(new OctetString("restrictedWriteView"), new OID(
-                "1.3.6.1.2.1"), new OctetString(), VacmMIB.vacmViewIncluded,
-                StorageType.nonVolatile);
+                                       "1.3.6.1.2.1"), new OctetString(), VacmMIB.vacmViewIncluded,
+                               StorageType.nonVolatile);
         vacm.addViewTreeFamily(new OctetString("restrictedNotifyView"),
-                new OID("1.3.6.1.2"), new OctetString(),
-                VacmMIB.vacmViewIncluded, StorageType.nonVolatile);
+                               new OID("1.3.6.1.2"), new OctetString(),
+                               VacmMIB.vacmViewIncluded, StorageType.nonVolatile);
         vacm.addViewTreeFamily(new OctetString("restrictedNotifyView"),
-                new OID("1.3.6.1.6.3.1"), new OctetString(),
-                VacmMIB.vacmViewIncluded, StorageType.nonVolatile);
+                               new OID("1.3.6.1.6.3.1"), new OctetString(),
+                               VacmMIB.vacmViewIncluded, StorageType.nonVolatile);
     }
 
     /**
      * The table of community strings configured in the SNMP engine's Local
      * Configuration Datastore (LCD).
-     * 
+     *
      * We only configure one, "public".
      */
     protected void addCommunities(SnmpCommunityMIB communityMIB) {
@@ -437,11 +438,11 @@ public class WaarpSnmpAgent extends BaseAgent {
             Address addr = GenericAddress.parse(address[i]);
             if (addr != null) {
                 logger.info("SNMP Agent InitTransport: {} {}", addr.getClass()
-                        .getSimpleName(), addr);
+                                                                   .getSimpleName(), addr);
                 TransportMapping<?> tm = null;
                 try {
                     tm = TransportMappings.getInstance()
-                            .createTransportMapping(addr);
+                                          .createTransportMapping(addr);
                 } catch (RuntimeException e) {
                     continue;
                 }
@@ -467,12 +468,12 @@ public class WaarpSnmpAgent extends BaseAgent {
     /**
      * Start method invokes some initialization methods needed to start the
      * agent
-     * 
+     *
      * @throws IOException
      */
     public void start() throws IOException {
         logger.debug("WaarpSnmpAgent starting: " + address[0] + " 1 on " +
-                address.length);
+                     address.length);
         try {
             init();
         } catch (IOException e) {
@@ -486,21 +487,22 @@ public class WaarpSnmpAgent extends BaseAgent {
         getServer().addContext(new OctetString("public"));
         finishInit();
         run();
-        if (TrapLevel.StartStop.isLevelValid(getTrapLevel()))
+        if (TrapLevel.StartStop.isLevelValid(getTrapLevel())) {
             sendColdStartNotification();
+        }
     }
 
     @Override
     protected void sendColdStartNotification() {
         logger.debug("ColdStartNotification: {}",
-                getMib().getBaseOidStartOrShutdown());
+                     getMib().getBaseOidStartOrShutdown());
         SNMPv2MIB snmpv2 = this.getMib().getSNMPv2MIB();
         notificationOriginator.notify(
                 new OctetString("public"),
                 SnmpConstants.coldStart,
                 new VariableBinding[] {
                         new VariableBinding(getMib().getBaseOidStartOrShutdown(),
-                                new OctetString("Startup Service")),
+                                            new OctetString("Startup Service")),
                         new VariableBinding(SnmpConstants.sysDescr, snmpv2
                                 .getDescr()),
                         new VariableBinding(SnmpConstants.sysObjectID, snmpv2
@@ -510,7 +512,8 @@ public class WaarpSnmpAgent extends BaseAgent {
                         new VariableBinding(SnmpConstants.sysName, snmpv2
                                 .getName()),
                         new VariableBinding(SnmpConstants.sysLocation, snmpv2
-                                .getLocation()) });
+                                .getLocation())
+                });
     }
 
     /**
@@ -526,7 +529,7 @@ public class WaarpSnmpAgent extends BaseAgent {
                 SnmpConstants.linkDown,
                 new VariableBinding[] {
                         new VariableBinding(getMib().getBaseOidStartOrShutdown(),
-                                new OctetString("Shutdown Service")),
+                                            new OctetString("Shutdown Service")),
                         new VariableBinding(SnmpConstants.sysDescr, snmpv2
                                 .getDescr()),
                         new VariableBinding(SnmpConstants.sysObjectID, snmpv2
@@ -536,7 +539,8 @@ public class WaarpSnmpAgent extends BaseAgent {
                         new VariableBinding(SnmpConstants.sysName, snmpv2
                                 .getName()),
                         new VariableBinding(SnmpConstants.sysLocation, snmpv2
-                                .getLocation()) });
+                                .getLocation())
+                });
         try {
             Thread.sleep(100);
         } catch (InterruptedException e) {
@@ -574,19 +578,5 @@ public class WaarpSnmpAgent extends BaseAgent {
      */
     public void setTrapLevel(int trapLevel) {
         this.trapLevel = trapLevel;
-    }
-
-    /**
-     * @param monitor the monitor to set
-     */
-    private void setMonitor(WaarpInterfaceMonitor monitor) {
-        this.monitor = monitor;
-    }
-
-    /**
-     * @param mib the mib to set
-     */
-    private void setMib(WaarpInterfaceMib mib) {
-        this.mib = mib;
     }
 }

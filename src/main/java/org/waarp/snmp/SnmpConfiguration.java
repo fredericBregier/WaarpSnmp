@@ -1,28 +1,20 @@
 /**
  * This file is part of Waarp Project.
- * 
- * Copyright 2009, Frederic Bregier, and individual contributors by the @author
- * tags. See the COPYRIGHT.txt in the distribution for a full listing of
- * individual contributors.
- * 
- * All Waarp Project is free software: you can redistribute it and/or
- * modify it under the terms of the GNU General private License as published by
- * the Free Software Foundation, either version 3 of the License, or (at your
- * option) any later version.
- * 
- * Waarp is distributed in the hope that it will be useful, but WITHOUT ANY
- * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
- * A PARTICULAR PURPOSE. See the GNU General private License for more details.
- * 
- * You should have received a copy of the GNU General private License along with
- * Waarp. If not, see <http://www.gnu.org/licenses/>.
+ * <p>
+ * Copyright 2009, Frederic Bregier, and individual contributors by the @author tags. See the COPYRIGHT.txt in the
+ * distribution for a full listing of individual contributors.
+ * <p>
+ * All Waarp Project is free software: you can redistribute it and/or modify it under the terms of the GNU General
+ * private License as published by the Free Software Foundation, either version 3 of the License, or (at your option)
+ * any later version.
+ * <p>
+ * Waarp is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General private License for more details.
+ * <p>
+ * You should have received a copy of the GNU General private License along with Waarp. If not, see
+ * <http://www.gnu.org/licenses/>.
  */
 package org.waarp.snmp;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
@@ -50,59 +42,63 @@ import org.waarp.common.xml.XmlType;
 import org.waarp.common.xml.XmlUtil;
 import org.waarp.common.xml.XmlValue;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 /**
  * SnmpConfiguration class from XML file
- * 
+ *
  * @author Frederic Bregier
- * 
+ *
  */
 public class SnmpConfiguration {
+    /**
+     * Default address: all in UDP port 161
+     */
+    public static final String DEFAULTADDRESS = "udp:0.0.0.0/161";
+    /**
+     * Static String
+     */
+    static final String NOTIFY = "notify";
+    /**
+     * Static String
+     */
+    static final String V3NOTIFY = "v3notify";
+    /**
+     * Static String
+     */
+    static final String V2C = "v2c";
+    /**
+     * List of all UsmUser
+     */
+    static final List<UsmUser> listUsmUser = new ArrayList<UsmUser>();
+    /**
+     * List of Target Element
+     */
+    static final List<TargetElement> listTargetElements = new ArrayList<SnmpConfiguration.TargetElement>();
     /**
      * Internal Logger
      */
     private static final WaarpLogger logger = WaarpLoggerFactory
             .getLogger(SnmpConfiguration.class);
-
     private static final String SNMP_ROOT = "/snmpconfig/";
-
     private static final String SNMP_CONFIG = "config";
-
     private static final String SNMP_LOCAL_ADDRESS = "localaddress";
-
     private static final String SNMP_NBTHREAD = "nbthread";
-
     private static final String SNMP_FILTERED = "filtered";
-
     private static final String SNMP_USETRAP = "usetrap";
-
     private static final String SNMP_TRAPLEVEL = "trapinformlevel";
-
     private static final XmlDecl[] configConfigDecls = {
             new XmlDecl(SNMP_LOCAL_ADDRESS, XmlType.STRING, SNMP_LOCAL_ADDRESS, true),
             new XmlDecl(XmlType.INTEGER, SNMP_NBTHREAD),
             new XmlDecl(XmlType.BOOLEAN, SNMP_FILTERED),
             new XmlDecl(XmlType.BOOLEAN, SNMP_USETRAP),
-            new XmlDecl(XmlType.INTEGER, SNMP_TRAPLEVEL) };
-
+            new XmlDecl(XmlType.INTEGER, SNMP_TRAPLEVEL)
+    };
     private static final String SNMP_TARGETS = "targets";
-
     private static final String SNMP_TARGET = "target";
-
-    /**
-     * Static String
-     */
-    static final String NOTIFY = "notify";
-
-    /**
-     * Static String
-     */
-    static final String V3NOTIFY = "v3notify";
-
-    /**
-     * Static String
-     */
-    static final String V2C = "v2c";
-
     /*
      * addTargetAddress(org.snmp4j.smi.OctetString name, org.snmp4j.smi.OID
      * transportDomain, org.snmp4j.smi.OctetString address, int timeout, int
@@ -111,50 +107,44 @@ public class SnmpConfiguration {
      * permenant
      */
     private static final String SNMP_TARGET_NAME = "name";
-
     private static final String SNMP_TARGET_DOMAIN = "domain";
-
     private static final String SNMP_TARGET_ADDRESS = "address";
-
     private static final String SNMP_TARGET_TIMEOUT = "timeout";
-
     private static final String SNMP_TARGET_RETRIES = "retries";
-
     private static final String SNMP_TARGET_ISV2 = "isv2";
-
     private static final XmlDecl[] configTargetDecls = {
             new XmlDecl(XmlType.STRING, SNMP_TARGET_NAME),
             new XmlDecl(XmlType.STRING, SNMP_TARGET_DOMAIN),
             new XmlDecl(XmlType.STRING, SNMP_TARGET_ADDRESS),
             new XmlDecl(XmlType.INTEGER, SNMP_TARGET_TIMEOUT),
             new XmlDecl(XmlType.INTEGER, SNMP_TARGET_RETRIES),
-            new XmlDecl(XmlType.BOOLEAN, SNMP_TARGET_ISV2) };
-
+            new XmlDecl(XmlType.BOOLEAN, SNMP_TARGET_ISV2)
+    };
     /*
      * org.snmp4j.security.UsmUser.UsmUser(OctetString securityName, OID
      * authenticationProtocol, OctetString authenticationPassphrase, OID
      * privacyProtocol, OctetString privacyPassphrase)
-     * 
+     *
      * Creates a USM user.
-     * 
-     * Parameters: 
-     * 
-     * -securityName the security name of the user (typically the user name). 
-     * 
+     *
+     * Parameters:
+     *
+     * -securityName the security name of the user (typically the user name).
+     *
      * -authenticationProtocol the authentication protcol ID to be
      * associated with this user. If set to null, this user only supports
-     * unauthenticated messages. 
-     * 
+     * unauthenticated messages.
+     *
      * -authenticationPassphrase the authentication
      * passphrase. If not null, authenticationProtocol must also be not null.
      * RFC3414 §11.2 requires passphrases to have a minimum length of 8 bytes.
      * If the length of authenticationPassphrase is less than 8 bytes an
-     * IllegalArgumentException is thrown. 
-     * 
+     * IllegalArgumentException is thrown.
+     *
      * -privacyProtocol the privacy protcol
      * ID to be associated with this user. If set to null, this user only
-     * supports unencrypted messages. 
-     * 
+     * supports unencrypted messages.
+     *
      * -privacyPassphrase the privacy passphrase.
      * If not null, privacyProtocol must also be not null. RFC3414 §11.2
      * requires passphrases to have a minimum length of 8 bytes. If the length
@@ -162,38 +152,28 @@ public class SnmpConfiguration {
      * IllegalArgumentException is thrown.
      */
     private static final String SNMP_SECURITIES = "securities";
-
     private static final String SNMP_SECURITY = "security";
-
     private static final String SNMP_SECURITY_NAME = "securityname";
-
     private static final String SNMP_SECURITY_AUTH_PROTOCOL = "securityauthprotocol";
-
     private static final String SNMP_SECURITY_AUTH_PASSPHRASE = "securityauthpass";
-
     private static final String SNMP_SECURITY_PRIV_PROTOCOL = "securityprivprotocol";
-
     private static final String SNMP_SECURITY_PRIV_PASSPHRASE = "securityprivpass";
-
     private static final XmlDecl[] configSecurityDecls = {
             new XmlDecl(XmlType.STRING, SNMP_SECURITY_NAME),
             new XmlDecl(XmlType.STRING, SNMP_SECURITY_AUTH_PROTOCOL),
             new XmlDecl(XmlType.STRING, SNMP_SECURITY_AUTH_PASSPHRASE),
             new XmlDecl(XmlType.STRING, SNMP_SECURITY_PRIV_PROTOCOL),
-            new XmlDecl(XmlType.STRING, SNMP_SECURITY_PRIV_PASSPHRASE) };
-
+            new XmlDecl(XmlType.STRING, SNMP_SECURITY_PRIV_PASSPHRASE)
+    };
     private static final XmlDecl[] configSNMP = {
             new XmlDecl(SNMP_CONFIG, XmlType.XVAL, SNMP_ROOT + SNMP_CONFIG,
-                    configConfigDecls, false),
+                        configConfigDecls, false),
             new XmlDecl(SNMP_SECURITY, XmlType.XVAL, SNMP_ROOT +
-                    SNMP_SECURITIES + "/" + SNMP_SECURITY, configSecurityDecls,
-                    true),
+                                                     SNMP_SECURITIES + "/" + SNMP_SECURITY, configSecurityDecls,
+                        true),
             new XmlDecl(SNMP_TARGET, XmlType.XVAL, SNMP_ROOT + SNMP_TARGETS +
-                    "/" + SNMP_TARGET, configTargetDecls, true) };
-
-    private static XmlValue[] configuration = null;
-
-    private static XmlHash hashConfig = null;
+                                                   "/" + SNMP_TARGET, configTargetDecls, true)
+    };
     /**
      * Address from the configuration for the SNMP Agent listening port
      */
@@ -215,13 +195,19 @@ public class SnmpConfiguration {
      */
     static int trapLevel = 0;
     /**
-     * Default address: all in UDP port 161
+     * Do we use SNMP V2c
      */
-    public static final String DEFAULTADDRESS = "udp:0.0.0.0/161";
+    static boolean hasV2 = false;
+    /**
+     * Do we use SNMP V3
+     */
+    static boolean hasV3 = false;
+    private static XmlValue[] configuration = null;
+    private static XmlHash hashConfig = null;
 
     /**
-     * 
-     * 
+     *
+     *
      * @return True if the configuration successfully load
      */
     private static boolean loadConfig() {
@@ -231,7 +217,8 @@ public class SnmpConfiguration {
         int length = values.size();
         if (length == 0) {
             address = new String[] {
-                    DEFAULTADDRESS };
+                    DEFAULTADDRESS
+            };
         } else {
             address = new String[length];
             int nb = 0;
@@ -245,7 +232,8 @@ public class SnmpConfiguration {
             }
             if (nb == 0) {
                 address = new String[] {
-                        DEFAULTADDRESS };
+                        DEFAULTADDRESS
+                };
             } else if (nb < length) {
                 // less addresses than intended
                 address = new String[nb];
@@ -258,8 +246,9 @@ public class SnmpConfiguration {
         value = hashConfig.get(SNMP_NBTHREAD);
         if (value != null && (!value.isEmpty())) {
             nbThread = value.getInteger();
-            if (nbThread <= 0)
+            if (nbThread <= 0) {
                 nbThread = 4;
+            }
         }
         value = hashConfig.get(SNMP_FILTERED);
         if (value != null && (!value.isEmpty())) {
@@ -277,55 +266,14 @@ public class SnmpConfiguration {
     }
 
     /**
-     * List of all UsmUser
-     */
-    static final List<UsmUser> listUsmUser = new ArrayList<UsmUser>();
-
-    /**
-     * Protocols for Security
-     * 
-     * @author Frederic Bregier
      *
-     */
-    public static enum SecurityProtocolList {
-        SHA(AuthSHA.ID), MD5(AuthMD5.ID);
-
-        public OID oid;
-
-        private SecurityProtocolList(OID oid) {
-            this.oid = oid;
-        }
-    }
-
-    /**
-     * Protocol for Privacy
-     * 
-     * @author Frederic Bregier
-     *
-     */
-    public static enum PrivacyProtocolList {
-        P3DES(Priv3DES.ID),
-        PAES128(PrivAES128.ID),
-        PAES192(PrivAES192.ID),
-        PAES256(PrivAES256.ID),
-        PDES(PrivDES.ID);
-
-        public OID oid;
-
-        private PrivacyProtocolList(OID oid) {
-            this.oid = oid;
-        }
-    }
-
-    /**
-     * 
      new XmlDecl(XmlType.STRING, SNMP_SECURITY_NAME), new
      * XmlDecl(XmlType.STRING, SNMP_SECURITY_AUTH_PROTOCOL), new
      * XmlDecl(XmlType.STRING, SNMP_SECURITY_AUTH_PASSPHRASE), new
      * XmlDecl(XmlType.STRING, SNMP_SECURITY_PRIV_PROTOCOL), new
      * XmlDecl(XmlType.STRING, SNMP_SECURITY_PRIV_PASSPHRASE)
-     * 
-     * 
+     *
+     *
      * @return True if load successfully
      */
     private static boolean loadSecurity() {
@@ -360,7 +308,7 @@ public class SnmpConfiguration {
                     secprot = SecurityProtocolList.valueOf(securityProtocol);
                 } catch (IllegalArgumentException e) {
                     logger.warn("No Security Protocol found for " +
-                            securityName);
+                                securityName);
                     continue;
                 }
                 value = subHash.get(SNMP_SECURITY_AUTH_PASSPHRASE);
@@ -380,7 +328,7 @@ public class SnmpConfiguration {
                             .valueOf(securityPrivProtocol);
                 } catch (IllegalArgumentException e) {
                     logger.warn("No Security Private Protocol found for " +
-                            securityName);
+                                securityName);
                     continue;
                 }
                 value = subHash.get(SNMP_SECURITY_PRIV_PASSPHRASE);
@@ -392,118 +340,35 @@ public class SnmpConfiguration {
                 }
             }
             UsmUser usm = new UsmUser(new OctetString(securityName),
-                    secprot == null ? null : secprot.oid, secprot == null ? null
-                            : new OctetString(securityPassphrase),
-                    privprot == null ? null : privprot.oid,
-                    privprot == null ? null : new OctetString(
-                            securityPrivPassphrase));
+                                      secprot == null? null : secprot.oid, secprot == null? null
+                                              : new OctetString(securityPassphrase),
+                                      privprot == null? null : privprot.oid,
+                                      privprot == null? null : new OctetString(
+                                              securityPrivPassphrase));
             listUsmUser.add(usm);
         }
         return true;
     }
 
-    private static enum TransportDomain {
-        UdpIpv4(TransportDomains.transportDomainUdpIpv4), UdpIpv6(
-                TransportDomains.transportDomainUdpIpv6), UdpIpv4z(
-                TransportDomains.transportDomainUdpIpv4z), UdpIpv6z(
-                TransportDomains.transportDomainUdpIpv6z), TcpIpv4(
-                TransportDomains.transportDomainTcpIpv4), TcpIpv6(
-                TransportDomains.transportDomainTcpIpv6), TcpIpv4z(
-                TransportDomains.transportDomainTcpIpv4z), TcpIpv6z(
-                TransportDomains.transportDomainTcpIpv6z);
-
-        public OID oid;
-
-        private TransportDomain(OID oid) {
-            this.oid = oid;
-        }
-    }
-
     /**
-     * Target entry
-     * 
-     * @author Frederic Bregier
      *
-     */
-    public static class TargetElement {
-        public OctetString name;
-
-        public OID transportDomain;
-
-        public OctetString address;
-
-        public int timeout;
-
-        public int retries;
-
-        public OctetString tagList;
-
-        public OctetString params;
-
-        public int storageType;
-
-        /**
-         * @param name
-         * @param transportDomain
-         * @param address
-         * @param timeout
-         * @param retries
-         * @param tagList
-         * @param params
-         * @param storageType
-         */
-        private TargetElement(OctetString name, OID transportDomain,
-                OctetString address, int timeout, int retries,
-                OctetString tagList, OctetString params, int storageType) {
-            this.name = name;
-            this.transportDomain = transportDomain;
-            this.address = address;
-            this.timeout = timeout;
-            this.retries = retries;
-            this.tagList = tagList;
-            this.params = params;
-            this.storageType = storageType;
-        }
-
-        public String toString() {
-            return "Name: " + name + " TD: " + transportDomain + " Add: " +
-                    address + " TO: " + timeout + " RT: " + retries + " TL: " +
-                    tagList + " PM: " + params + " ST: " + storageType;
-        }
-    }
-
-    /**
-     * List of Target Element
-     */
-    static final List<TargetElement> listTargetElements = new ArrayList<SnmpConfiguration.TargetElement>();
-    /**
-     * Do we use SNMP V2c
-     */
-    static boolean hasV2 = false;
-    /**
-     * Do we use SNMP V3
-     */
-    static boolean hasV3 = false;
-
-    /**
-     * 
      new XmlDecl(XmlType.STRING, SNMP_TARGET_NAME), free name new
      * XmlDecl(XmlType.STRING, SNMP_TARGET_DOMAIN), one of (Udp/Tcp)Ipv(4/6)[z]
      * new XmlDecl(XmlType.STRING, SNMP_TARGET_ADDRESS), new
      * XmlDecl(XmlType.INTEGER, SNMP_TARGET_TIMEOUT), new
      * XmlDecl(XmlType.INTEGER, SNMP_TARGET_RETRIES), new
      * XmlDecl(XmlType.BOOLEAN, SNMP_TARGET_ISV2) True => v2, else v3
-     * 
+     *
      * new OctetString("notificationV2c"),
      * TransportDomains.transportDomainUdpIpv4, new OctetString( new
      * UdpAddress(toAddressV2).getValue()), 200, 1, new OctetString("notify"),
      * new OctetString("v2c"), StorageType.permanent
-     * 
+     *
      * new OctetString("notificationV3"),
      * TransportDomains.transportDomainUdpIpv4, new OctetString( new
      * UdpAddress(toAddressV3).getValue()), 200, 1, new OctetString("notify"),
      * new OctetString("v3notify"), StorageType.permanent
-     * 
+     *
      * @return True if successfully loaded
      */
     private static boolean loadTarget() {
@@ -546,7 +411,7 @@ public class SnmpConfiguration {
                 oTargetDomain = domain.oid;
             } catch (IllegalArgumentException e) {
                 logger.warn("No Target Domain correctly found for " +
-                        targetName);
+                            targetName);
                 continue;
             }
             value = subHash.get(SNMP_TARGET_ADDRESS);
@@ -558,18 +423,18 @@ public class SnmpConfiguration {
             TransportIpAddress address = null;
             try {
                 switch (domain) {
-                    case UdpIpv4:
-                    case UdpIpv6:
-                    case UdpIpv4z:
-                    case UdpIpv6z:
-                        address = new UdpAddress(targetAddress);
-                        break;
-                    case TcpIpv4:
-                    case TcpIpv6:
-                    case TcpIpv4z:
-                    case TcpIpv6z:
-                        address = new TcpAddress(targetAddress);
-                        break;
+                case UdpIpv4:
+                case UdpIpv6:
+                case UdpIpv4z:
+                case UdpIpv6z:
+                    address = new UdpAddress(targetAddress);
+                    break;
+                case TcpIpv4:
+                case TcpIpv6:
+                case TcpIpv4z:
+                case TcpIpv6z:
+                    address = new TcpAddress(targetAddress);
+                    break;
                 }
             } catch (IllegalArgumentException e) {
                 logger.warn("No Correct Target Address found for " + targetName);
@@ -591,8 +456,9 @@ public class SnmpConfiguration {
             } else {
                 targetRetries = value.getInteger();
             }
-            if (targetRetries <= 0)
+            if (targetRetries <= 0) {
                 targetRetries = 1;
+            }
             value = subHash.get(SNMP_TARGET_ISV2);
             boolean isV2 = true;
             if (value == null || (value.isEmpty())) {
@@ -610,8 +476,8 @@ public class SnmpConfiguration {
             TargetElement element = new TargetElement(new OctetString(
                     targetName), oTargetDomain, new OctetString(
                     address.getValue()), targetTimeout, targetRetries,
-                    new OctetString(NOTIFY), new OctetString(targetParams),
-                    StorageType.permanent);
+                                                      new OctetString(NOTIFY), new OctetString(targetParams),
+                                                      StorageType.permanent);
             listTargetElements.add(element);
         }
         return true;
@@ -619,7 +485,7 @@ public class SnmpConfiguration {
 
     /**
      * Initiate the configuration from the xml file for SNMP agent
-     * 
+     *
      * @param file
      * @return True if OK
      */
@@ -631,34 +497,142 @@ public class SnmpConfiguration {
         } catch (DocumentException e) {
             logger.error(
                     "Unable to read the XML Config file: " +
-                            file.getAbsolutePath(), e);
+                    file.getAbsolutePath(), e);
             return false;
         }
         if (document == null) {
             logger.error("Unable to read the XML Config file: " +
-                    file.getAbsolutePath());
+                         file.getAbsolutePath());
             return false;
         }
         configuration = XmlUtil.read(document, configSNMP);
         hashConfig = new XmlHash(configuration);
         address = new String[] {
-                DEFAULTADDRESS };
+                DEFAULTADDRESS
+        };
         nbThread = 4;
         listUsmUser.clear();
         listTargetElements.clear();
         try {
             // Now read the configuration
-            if (!loadConfig())
+            if (!loadConfig()) {
                 return false;
-            if (!loadSecurity())
+            }
+            if (!loadSecurity()) {
                 return false;
-            if (!loadTarget())
+            }
+            if (!loadTarget()) {
                 return false;
+            }
         } finally {
             hashConfig.clear();
             hashConfig = null;
             configuration = null;
         }
         return true;
+    }
+    /**
+     * Protocols for Security
+     *
+     * @author Frederic Bregier
+     *
+     */
+    public static enum SecurityProtocolList {
+        SHA(AuthSHA.ID), MD5(AuthMD5.ID);
+
+        public OID oid;
+
+        private SecurityProtocolList(OID oid) {
+            this.oid = oid;
+        }
+    }
+    /**
+     * Protocol for Privacy
+     *
+     * @author Frederic Bregier
+     *
+     */
+    public static enum PrivacyProtocolList {
+        P3DES(Priv3DES.ID),
+        PAES128(PrivAES128.ID),
+        PAES192(PrivAES192.ID),
+        PAES256(PrivAES256.ID),
+        PDES(PrivDES.ID);
+
+        public OID oid;
+
+        private PrivacyProtocolList(OID oid) {
+            this.oid = oid;
+        }
+    }
+
+    private static enum TransportDomain {
+        UdpIpv4(TransportDomains.transportDomainUdpIpv4), UdpIpv6(
+                TransportDomains.transportDomainUdpIpv6), UdpIpv4z(
+                TransportDomains.transportDomainUdpIpv4z), UdpIpv6z(
+                TransportDomains.transportDomainUdpIpv6z), TcpIpv4(
+                TransportDomains.transportDomainTcpIpv4), TcpIpv6(
+                TransportDomains.transportDomainTcpIpv6), TcpIpv4z(
+                TransportDomains.transportDomainTcpIpv4z), TcpIpv6z(
+                TransportDomains.transportDomainTcpIpv6z);
+
+        public OID oid;
+
+        private TransportDomain(OID oid) {
+            this.oid = oid;
+        }
+    }
+
+    /**
+     * Target entry
+     *
+     * @author Frederic Bregier
+     *
+     */
+    public static class TargetElement {
+        public OctetString name;
+
+        public OID transportDomain;
+
+        public OctetString address;
+
+        public int timeout;
+
+        public int retries;
+
+        public OctetString tagList;
+
+        public OctetString params;
+
+        public int storageType;
+
+        /**
+         * @param name
+         * @param transportDomain
+         * @param address
+         * @param timeout
+         * @param retries
+         * @param tagList
+         * @param params
+         * @param storageType
+         */
+        private TargetElement(OctetString name, OID transportDomain,
+                              OctetString address, int timeout, int retries,
+                              OctetString tagList, OctetString params, int storageType) {
+            this.name = name;
+            this.transportDomain = transportDomain;
+            this.address = address;
+            this.timeout = timeout;
+            this.retries = retries;
+            this.tagList = tagList;
+            this.params = params;
+            this.storageType = storageType;
+        }
+
+        public String toString() {
+            return "Name: " + name + " TD: " + transportDomain + " Add: " +
+                   address + " TO: " + timeout + " RT: " + retries + " TL: " +
+                   tagList + " PM: " + params + " ST: " + storageType;
+        }
     }
 }
