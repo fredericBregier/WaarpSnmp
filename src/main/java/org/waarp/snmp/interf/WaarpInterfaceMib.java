@@ -27,7 +27,6 @@ import org.waarp.snmp.utils.WaarpMOScalar;
  * Interface for All MIBs in Waarp project
  *
  * @author Frederic Bregier
- *
  */
 public interface WaarpInterfaceMib extends MOGroup {
     public static OID rootEnterpriseMib = new OID(".1.3.6.1.4.1");
@@ -40,13 +39,11 @@ public interface WaarpInterfaceMib extends MOGroup {
     public abstract void setAgent(WaarpSnmpAgent agent);
 
     /**
-     *
      * @return the base OID for trap or notification of Start or Shutdown
      */
     public abstract OID getBaseOidStartOrShutdown();
 
     /**
-     *
      * @return the SNMPv2MIB associated with this MIB
      */
     public abstract SNMPv2MIB getSNMPv2MIB();

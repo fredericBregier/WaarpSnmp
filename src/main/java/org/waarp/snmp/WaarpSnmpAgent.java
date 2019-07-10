@@ -59,11 +59,9 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * This Agent contains some functionalities for running a version 2c and 3 of
- * SNMP agent.
+ * This Agent contains some functionalities for running a version 2c and 3 of SNMP agent.
  *
  * @author Frederic Bregier
- *
  */
 public class WaarpSnmpAgent extends BaseAgent {
     /**
@@ -94,13 +92,9 @@ public class WaarpSnmpAgent extends BaseAgent {
     private WaarpInterfaceMib mib;
 
     /**
-     *
-     * @param configurationFile
-     *            XML format
-     * @param monitor
-     *            the associated monitor
-     * @param mib
-     *            the associated MIB
+     * @param configurationFile XML format
+     * @param monitor the associated monitor
+     * @param mib the associated MIB
      *
      * @throws IllegalArgumentException
      */
@@ -182,7 +176,6 @@ public class WaarpSnmpAgent extends BaseAgent {
     }
 
     /**
-     *
      * @return the uptime in ms
      */
     public long getUptime() {
@@ -190,7 +183,6 @@ public class WaarpSnmpAgent extends BaseAgent {
     }
 
     /**
-     *
      * @return the uptime but in System time in ms
      */
     public long getUptimeSystemTime() {
@@ -218,7 +210,6 @@ public class WaarpSnmpAgent extends BaseAgent {
     }
 
     /**
-     *
      * @param moGroup
      */
     public void unregisterManagedObject(MOGroup moGroup) {
@@ -227,8 +218,7 @@ public class WaarpSnmpAgent extends BaseAgent {
     }
 
     /**
-     * Adds all the necessary initial users to the USM. Only applicable to SNMP
-     * V3
+     * Adds all the necessary initial users to the USM. Only applicable to SNMP V3
      */
     protected void addUsmUser(USM usm) {
         for (UsmUser userlist : listUsmUser) {
@@ -336,7 +326,7 @@ public class WaarpSnmpAgent extends BaseAgent {
 
     /**
      * Minimal View based Access Control
-     *
+     * <p>
      * http://www.faqs.org/rfcs/rfc2575.html
      */
     protected void addViews(VacmMIB vacm) {
@@ -407,9 +397,8 @@ public class WaarpSnmpAgent extends BaseAgent {
     }
 
     /**
-     * The table of community strings configured in the SNMP engine's Local
-     * Configuration Datastore (LCD).
-     *
+     * The table of community strings configured in the SNMP engine's Local Configuration Datastore (LCD).
+     * <p>
      * We only configure one, "public".
      */
     protected void addCommunities(SnmpCommunityMIB communityMIB) {
@@ -466,8 +455,7 @@ public class WaarpSnmpAgent extends BaseAgent {
     }
 
     /**
-     * Start method invokes some initialization methods needed to start the
-     * agent
+     * Start method invokes some initialization methods needed to start the agent
      *
      * @throws IOException
      */

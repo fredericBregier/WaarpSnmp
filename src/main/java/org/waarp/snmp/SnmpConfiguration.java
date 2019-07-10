@@ -51,7 +51,6 @@ import java.util.List;
  * SnmpConfiguration class from XML file
  *
  * @author Frederic Bregier
- *
  */
 public class SnmpConfiguration {
     /**
@@ -206,8 +205,6 @@ public class SnmpConfiguration {
     private static XmlHash hashConfig = null;
 
     /**
-     *
-     *
      * @return True if the configuration successfully load
      */
     private static boolean loadConfig() {
@@ -266,13 +263,9 @@ public class SnmpConfiguration {
     }
 
     /**
-     *
-     new XmlDecl(XmlType.STRING, SNMP_SECURITY_NAME), new
-     * XmlDecl(XmlType.STRING, SNMP_SECURITY_AUTH_PROTOCOL), new
-     * XmlDecl(XmlType.STRING, SNMP_SECURITY_AUTH_PASSPHRASE), new
-     * XmlDecl(XmlType.STRING, SNMP_SECURITY_PRIV_PROTOCOL), new
-     * XmlDecl(XmlType.STRING, SNMP_SECURITY_PRIV_PASSPHRASE)
-     *
+     * new XmlDecl(XmlType.STRING, SNMP_SECURITY_NAME), new XmlDecl(XmlType.STRING, SNMP_SECURITY_AUTH_PROTOCOL), new
+     * XmlDecl(XmlType.STRING, SNMP_SECURITY_AUTH_PASSPHRASE), new XmlDecl(XmlType.STRING, SNMP_SECURITY_PRIV_PROTOCOL),
+     * new XmlDecl(XmlType.STRING, SNMP_SECURITY_PRIV_PASSPHRASE)
      *
      * @return True if load successfully
      */
@@ -351,23 +344,18 @@ public class SnmpConfiguration {
     }
 
     /**
-     *
-     new XmlDecl(XmlType.STRING, SNMP_TARGET_NAME), free name new
-     * XmlDecl(XmlType.STRING, SNMP_TARGET_DOMAIN), one of (Udp/Tcp)Ipv(4/6)[z]
-     * new XmlDecl(XmlType.STRING, SNMP_TARGET_ADDRESS), new
-     * XmlDecl(XmlType.INTEGER, SNMP_TARGET_TIMEOUT), new
-     * XmlDecl(XmlType.INTEGER, SNMP_TARGET_RETRIES), new
-     * XmlDecl(XmlType.BOOLEAN, SNMP_TARGET_ISV2) True => v2, else v3
-     *
-     * new OctetString("notificationV2c"),
-     * TransportDomains.transportDomainUdpIpv4, new OctetString( new
-     * UdpAddress(toAddressV2).getValue()), 200, 1, new OctetString("notify"),
-     * new OctetString("v2c"), StorageType.permanent
-     *
-     * new OctetString("notificationV3"),
-     * TransportDomains.transportDomainUdpIpv4, new OctetString( new
-     * UdpAddress(toAddressV3).getValue()), 200, 1, new OctetString("notify"),
-     * new OctetString("v3notify"), StorageType.permanent
+     * new XmlDecl(XmlType.STRING, SNMP_TARGET_NAME), free name new XmlDecl(XmlType.STRING, SNMP_TARGET_DOMAIN), one of
+     * (Udp/Tcp)Ipv(4/6)[z] new XmlDecl(XmlType.STRING, SNMP_TARGET_ADDRESS), new XmlDecl(XmlType.INTEGER,
+     * SNMP_TARGET_TIMEOUT), new XmlDecl(XmlType.INTEGER, SNMP_TARGET_RETRIES), new XmlDecl(XmlType.BOOLEAN,
+     * SNMP_TARGET_ISV2) True => v2, else v3
+     * <p>
+     * new OctetString("notificationV2c"), TransportDomains.transportDomainUdpIpv4, new OctetString( new
+     * UdpAddress(toAddressV2).getValue()), 200, 1, new OctetString("notify"), new OctetString("v2c"),
+     * StorageType.permanent
+     * <p>
+     * new OctetString("notificationV3"), TransportDomains.transportDomainUdpIpv4, new OctetString( new
+     * UdpAddress(toAddressV3).getValue()), 200, 1, new OctetString("notify"), new OctetString("v3notify"),
+     * StorageType.permanent
      *
      * @return True if successfully loaded
      */
@@ -487,6 +475,7 @@ public class SnmpConfiguration {
      * Initiate the configuration from the xml file for SNMP agent
      *
      * @param file
+     *
      * @return True if OK
      */
     public static boolean setConfigurationFromXml(File file) {
@@ -531,11 +520,11 @@ public class SnmpConfiguration {
         }
         return true;
     }
+
     /**
      * Protocols for Security
      *
      * @author Frederic Bregier
-     *
      */
     public static enum SecurityProtocolList {
         SHA(AuthSHA.ID), MD5(AuthMD5.ID);
@@ -546,11 +535,11 @@ public class SnmpConfiguration {
             this.oid = oid;
         }
     }
+
     /**
      * Protocol for Privacy
      *
      * @author Frederic Bregier
-     *
      */
     public static enum PrivacyProtocolList {
         P3DES(Priv3DES.ID),
@@ -587,7 +576,6 @@ public class SnmpConfiguration {
      * Target entry
      *
      * @author Frederic Bregier
-     *
      */
     public static class TargetElement {
         public OctetString name;

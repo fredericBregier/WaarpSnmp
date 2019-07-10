@@ -43,7 +43,6 @@ import java.util.List;
  * Simple SNMP Client (for testing purpose)
  *
  * @author Frederic Bregier
- *
  */
 public class WaarpSimpleSnmpClient {
 
@@ -79,9 +78,8 @@ public class WaarpSimpleSnmpClient {
     }
 
     /**
-     * Start the Snmp session. If you forget the listen() method you will not
-     * get any answers because the communication is asynchronous and the
-     * listen() method listens for answers.
+     * Start the Snmp session. If you forget the listen() method you will not get any answers because the communication
+     * is asynchronous and the listen() method listens for answers.
      *
      * @throws IOException
      **/
@@ -95,11 +93,12 @@ public class WaarpSimpleSnmpClient {
     }
 
     /**
-     * Method which takes a single OID and returns the response from the agent
-     * as a String.
+     * Method which takes a single OID and returns the response from the agent as a String.
      *
      * @param oid
+     *
      * @return String
+     *
      * @throws IOException
      **/
     public String getAsString(OID oid) throws IOException {
@@ -128,8 +127,8 @@ public class WaarpSimpleSnmpClient {
     }
 
     /**
-     *
      * @param oids
+     *
      * @return A PDU from oids
      */
     private PDU getPDU(OID oids[]) {
@@ -146,7 +145,9 @@ public class WaarpSimpleSnmpClient {
      * This method is capable of handling multiple OIDs
      *
      * @param oids
+     *
      * @return ResponseEvent
+     *
      * @throws IOException
      **/
     public ResponseEvent get(OID oids[]) throws IOException {
@@ -158,8 +159,7 @@ public class WaarpSimpleSnmpClient {
     }
 
     /**
-     * This method returns a Target, which contains information about where the
-     * data should be fetched and how.
+     * This method returns a Target, which contains information about where the data should be fetched and how.
      *
      * @return
      **/

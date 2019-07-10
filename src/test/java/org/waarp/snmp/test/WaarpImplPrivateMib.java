@@ -31,7 +31,6 @@ import org.waarp.snmp.utils.WaarpMOScalar;
  * Example of Implementation of WaarpPrivateMib
  *
  * @author Frederic Bregier
- *
  */
 public class WaarpImplPrivateMib extends WaarpPrivateMib {
     /**

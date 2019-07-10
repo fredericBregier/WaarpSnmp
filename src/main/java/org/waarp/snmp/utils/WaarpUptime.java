@@ -23,16 +23,13 @@ import org.snmp4j.smi.TimeTicks;
  * Specific Value for TimeTicks for Uptime
  *
  * @author Frederic Bregier
- *
  */
 @SuppressWarnings("serial")
 public class WaarpUptime extends TimeTicks {
     protected SysUpTime type = null;
 
     /**
-     *
-     * @param type
-     *            SysUpTime from SNMPV2
+     * @param type SysUpTime from SNMPV2
      */
     public WaarpUptime(SysUpTime type) {
         this.type = type;

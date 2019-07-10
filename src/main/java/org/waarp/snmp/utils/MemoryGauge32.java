@@ -22,7 +22,6 @@ import org.waarp.snmp.interf.WaarpGauge32;
  * Specific Value for Gauge32 for Memory usage
  *
  * @author Frederic Bregier
- *
  */
 @SuppressWarnings("serial")
 public class MemoryGauge32 extends WaarpGauge32 {
@@ -34,10 +33,9 @@ public class MemoryGauge32 extends WaarpGauge32 {
      * Type of MemoryType used
      */
     protected MemoryType type = null;
+
     /**
-     *
-     * @param type
-     *            the type of MemoryType used
+     * @param type the type of MemoryType used
      */
     public MemoryGauge32(MemoryType type) {
         this.type = type;
@@ -74,7 +72,6 @@ public class MemoryGauge32 extends WaarpGauge32 {
      * The different Type of Memory Gauge32 elements
      *
      * @author Frederic Bregier
-     *
      */
     public static enum MemoryType {
         TotalMemory, FreeMemory, UsedMemory

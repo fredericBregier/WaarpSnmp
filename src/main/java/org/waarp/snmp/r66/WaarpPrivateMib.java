@@ -41,7 +41,6 @@ import org.waarp.snmp.utils.WaarpUptime;
  * Private MIB for Waarp OpenR66
  *
  * @author Frederic Bregier
- *
  */
 public abstract class WaarpPrivateMib implements WaarpInterfaceMib {
     /**
@@ -305,7 +304,7 @@ public abstract class WaarpPrivateMib implements WaarpInterfaceMib {
     public String address = "somewhere";
     /**
      * SnmpConstants.sysServices
-     *
+     * <p>
      * transport + application
      */
     public int service = 72;
@@ -314,9 +313,8 @@ public abstract class WaarpPrivateMib implements WaarpInterfaceMib {
      */
     public SysUpTime upTime = null;
     /**
-     * need to add ".port" like "6666" Only in TCP (no UDP supported for
-     * Waarp)
-     *
+     * need to add ".port" like "6666" Only in TCP (no UDP supported for Waarp)
+     * <p>
      * example: rootEnterpriseMib+"66666"+".1.1.4.";
      */
     public String applicationProtocolBase = null;
@@ -398,23 +396,14 @@ public abstract class WaarpPrivateMib implements WaarpInterfaceMib {
     public WaarpSnmpAgent agent;
 
     /**
-     *
-     * @param sysdesc
-     *            The System Description to associate
-     * @param port
-     *            the port to show as used by the application
-     * @param smiPrivateCodeFinal
-     *            the smiPrivateCode (should be 66666)
-     * @param typeWaarpObject
-     *            the type of Waarp Object (should be 66)
-     * @param scontactName
-     *            the contact name to show
-     * @param stextualName
-     *            the textual name to show
-     * @param saddress
-     *            the address to show
-     * @param iservice
-     *            the service to show (should be 72)
+     * @param sysdesc The System Description to associate
+     * @param port the port to show as used by the application
+     * @param smiPrivateCodeFinal the smiPrivateCode (should be 66666)
+     * @param typeWaarpObject the type of Waarp Object (should be 66)
+     * @param scontactName the contact name to show
+     * @param stextualName the textual name to show
+     * @param saddress the address to show
+     * @param iservice the service to show (should be 72)
      */
     public WaarpPrivateMib(String sysdesc, int port, int smiPrivateCodeFinal,
                            int typeWaarpObject, String scontactName, String stextualName,
@@ -457,8 +446,7 @@ public abstract class WaarpPrivateMib implements WaarpInterfaceMib {
     }
 
     /**
-     * Unregister and Register again the SNMPv2MIB with System adapted to this
-     * Mib
+     * Unregister and Register again the SNMPv2MIB with System adapted to this Mib
      *
      * @throws DuplicateRegistrationException
      */
@@ -580,7 +568,6 @@ public abstract class WaarpPrivateMib implements WaarpInterfaceMib {
      * MIB entry levels
      *
      * @author Frederic Bregier
-     *
      */
     public static enum MibLevel {
         staticInfo, globalInfo, detailedInfo, errorInfo, trapInfo
@@ -590,7 +577,6 @@ public abstract class WaarpPrivateMib implements WaarpInterfaceMib {
      * Notification Elements
      *
      * @author Frederic Bregier
-     *
      */
     public static enum NotificationElements {
         TrapShutdown(1),
@@ -623,7 +609,6 @@ public abstract class WaarpPrivateMib implements WaarpInterfaceMib {
      * Notification for a task trap
      *
      * @author Frederic Bregier
-     *
      */
     public static enum NotificationTasks {
         globalStepInfo,
@@ -650,7 +635,6 @@ public abstract class WaarpPrivateMib implements WaarpInterfaceMib {
      * Definition part
      *
      * @author Frederic Bregier
-     *
      */
     public static enum WaarpDefinitionIndex {
         applName,
@@ -669,7 +653,6 @@ public abstract class WaarpPrivateMib implements WaarpInterfaceMib {
      * Global part
      *
      * @author Frederic Bregier
-     *
      */
     public static enum WaarpGlobalValuesIndex {
         applUptime,
@@ -708,7 +691,6 @@ public abstract class WaarpPrivateMib implements WaarpInterfaceMib {
      * Detailed part
      *
      * @author Frederic Bregier
-     *
      */
     public static enum WaarpDetailedValuesIndex {
         nbStepNotask,
@@ -734,7 +716,6 @@ public abstract class WaarpPrivateMib implements WaarpInterfaceMib {
      * Error part
      *
      * @author Frederic Bregier
-     *
      */
     public static enum WaarpErrorValuesIndex {
         nbStatusConnectionImpossible,
@@ -771,7 +752,6 @@ public abstract class WaarpPrivateMib implements WaarpInterfaceMib {
      * Oper Status (as defined in Net Application SNMP)
      *
      * @author Frederic Bregier
-     *
      */
     public static enum OperStatus {
         up(1), down(2), halted(3), congested(4), restarting(5), quiescing(6);

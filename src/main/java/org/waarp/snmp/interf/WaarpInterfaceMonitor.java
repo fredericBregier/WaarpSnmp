@@ -19,15 +19,12 @@ package org.waarp.snmp.interf;
 import org.waarp.snmp.WaarpSnmpAgent;
 
 /**
- * This interface defines a Monitor to be used in Waarp projects, for HTTP
- * support or SNMP support.
+ * This interface defines a Monitor to be used in Waarp projects, for HTTP support or SNMP support.
  *
  * @author Frederic Bregier
- *
  */
 public interface WaarpInterfaceMonitor {
     /**
-     *
      * @param agent
      */
     public abstract void setAgent(WaarpSnmpAgent agent);
@@ -38,8 +35,7 @@ public interface WaarpInterfaceMonitor {
     public void initialize();
 
     /**
-     * To release the monitor resources. The monitor is no more valid after this
-     * call
+     * To release the monitor resources. The monitor is no more valid after this call
      */
     public void releaseResources();
 }

@@ -33,7 +33,6 @@ import java.io.IOException;
  * Test class for Agent and simple Client
  *
  * @author Frederic Bregier
- *
  */
 public class WaarpTestSnmpClientAgent {
     static WaarpSnmpAgent agent;
@@ -90,8 +89,7 @@ public class WaarpTestSnmpClientAgent {
     }
 
     /**
-     * Simply verifies that we get the same sysDescr as we have registered in
-     * our agent
+     * Simply verifies that we get the same sysDescr as we have registered in our agent
      */
     public static void verifySysDescr() throws IOException {
         assertEquals(test.textualSysDecr,

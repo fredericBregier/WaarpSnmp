@@ -25,7 +25,6 @@ import org.waarp.snmp.interf.WaarpInterfaceMonitor;
  * This implementation show how to support SNMP.
  *
  * @author Frederic Bregier
- *
  */
 public class WaarpPrivateMonitor implements WaarpInterfaceMonitor {
     /**
@@ -44,8 +43,7 @@ public class WaarpPrivateMonitor implements WaarpInterfaceMonitor {
     }
 
     /**
-     * @param agent
-     *            the agent to set
+     * @param agent the agent to set
      */
     public void setAgent(WaarpSnmpAgent agent) {
         this.agent = agent;

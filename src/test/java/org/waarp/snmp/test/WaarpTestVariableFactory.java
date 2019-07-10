@@ -31,7 +31,6 @@ import org.waarp.snmp.interf.WaarpInterfaceVariableFactory;
 
 /**
  * @author Frederic Bregier
- *
  */
 public class WaarpTestVariableFactory implements WaarpInterfaceVariableFactory {
 

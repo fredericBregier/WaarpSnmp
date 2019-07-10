@@ -29,7 +29,6 @@ import org.waarp.snmp.interf.WaarpInterfaceMib;
  * MORow implementation for GoldenGate
  *
  * @author Frederic Bregier
- *
  */
 public class WaarpMORow implements MOGroup {
     /**
@@ -54,12 +53,10 @@ public class WaarpMORow implements MOGroup {
     private WaarpMOScalar[] row;
 
     /**
-     *
      * @param mib
      * @param reference
      * @param entries
-     * @param mibLevel
-     *            this integer identifies this Row in the MIB
+     * @param mibLevel this integer identifies this Row in the MIB
      */
     public WaarpMORow(WaarpInterfaceMib mib, OID reference, WaarpEntry[] entries,
                       int mibLevel) {
@@ -88,6 +85,7 @@ public class WaarpMORow implements MOGroup {
      *
      * @param index
      * @param value
+     *
      * @throws IllegalArgumentException
      */
     public void setValue(int index, Object value)

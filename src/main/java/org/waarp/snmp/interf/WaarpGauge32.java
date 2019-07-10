@@ -22,7 +22,6 @@ import org.snmp4j.smi.Gauge32;
  * Generic Gauge32 with update possibility for GoldenGate
  *
  * @author Frederic Bregier
- *
  */
 @SuppressWarnings("serial")
 public abstract class WaarpGauge32 extends Gauge32 {
@@ -35,14 +34,12 @@ public abstract class WaarpGauge32 extends Gauge32 {
     }
 
     /**
-     * Function to set the data before it is accessed by SNMP4J. This function
-     * MUST call setValue(long)
+     * Function to set the data before it is accessed by SNMP4J. This function MUST call setValue(long)
      */
     protected abstract void setInternalValue();
 
     /**
-     * Function to set the data before it is accessed by SNMP4J. This function
-     * MUST call setValue(long)
+     * Function to set the data before it is accessed by SNMP4J. This function MUST call setValue(long)
      */
     protected abstract void setInternalValue(long value);
 

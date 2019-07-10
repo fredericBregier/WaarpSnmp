@@ -38,7 +38,6 @@ import org.waarp.snmp.utils.WaarpMOScalar;
  * This class creates and returns ManagedObjects
  *
  * @author Frederic Bregier
- *
  */
 public class WaarpMOFactory {
     /**
@@ -52,10 +51,10 @@ public class WaarpMOFactory {
     private static WaarpInterfaceVariableFactory defaultFactory = new WaarpDefaultVariableFactory();
 
     /**
-     *
      * @param oid
      * @param value
      * @param type
+     *
      * @return an MOScalar according to the argument
      */
     public static WaarpMOScalar createReadOnly(OID oid, Object value, int type,
@@ -65,11 +64,11 @@ public class WaarpMOFactory {
     }
 
     /**
-     *
      * @param oid
      * @param value
      * @param type
      * @param access
+     *
      * @return an MOScalar according to the argument
      */
     public static WaarpMOScalar create(OID oid, Object value, int type,
@@ -86,6 +85,7 @@ public class WaarpMOFactory {
      * @param type
      * @param mibLevel
      * @param entry
+     *
      * @return a Variable using the arguments
      */
     public static Variable getVariable(OID oid, Object value, int type,

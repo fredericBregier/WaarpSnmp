@@ -22,7 +22,6 @@ import org.snmp4j.smi.TimeTicks;
  * Generic TimeTicks with update possibility for GoldenGate
  *
  * @author Frederic Bregier
- *
  */
 @SuppressWarnings("serial")
 public abstract class WaarpTimeTicks extends TimeTicks {
@@ -35,14 +34,12 @@ public abstract class WaarpTimeTicks extends TimeTicks {
     }
 
     /**
-     * Function to set the data before it is accessed by SNMP4J. This function
-     * MUST call setValue(long)
+     * Function to set the data before it is accessed by SNMP4J. This function MUST call setValue(long)
      */
     protected abstract void setInternalValue();
 
     /**
-     * Function to set the data before it is accessed by SNMP4J. This function
-     * MUST call setValue(long)
+     * Function to set the data before it is accessed by SNMP4J. This function MUST call setValue(long)
      */
     protected abstract void setInternalValue(long value);
 

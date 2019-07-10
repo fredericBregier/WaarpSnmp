@@ -27,7 +27,6 @@ import org.snmp4j.smi.Variable;
  * GoldenGate MOScalar implementation
  *
  * @author Frederic Bregier
- *
  */
 public class WaarpMOScalar extends MOScalar<Variable> {
     WaarpMORow row;
@@ -44,8 +43,8 @@ public class WaarpMOScalar extends MOScalar<Variable> {
     }
 
     /**
-     * Called when a direct external access is done to this scalar. Therefore
-     * this function can be override to host update check.
+     * Called when a direct external access is done to this scalar. Therefore this function can be override to host
+     * update check.
      *
      * @see org.snmp4j.agent.mo.MOScalar#get(org.snmp4j.agent.request.SubRequest)
      */
@@ -56,8 +55,8 @@ public class WaarpMOScalar extends MOScalar<Variable> {
     }
 
     /**
-     * Called when a multiple external access is done to this scalar and the
-     * following. Therefore this function can be override to host update check.
+     * Called when a multiple external access is done to this scalar and the following. Therefore this function can be
+     * override to host update check.
      *
      * @see org.snmp4j.agent.mo.MOScalar#find(org.snmp4j.agent.MOScope)
      */

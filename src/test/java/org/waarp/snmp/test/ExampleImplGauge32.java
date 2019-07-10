@@ -23,7 +23,6 @@ import org.waarp.snmp.interf.WaarpGauge32;
  * Example of WaarpGauge32 Usage
  *
  * @author Frederic Bregier
- *
  */
 @SuppressWarnings("serial")
 public class ExampleImplGauge32 extends WaarpGauge32 {

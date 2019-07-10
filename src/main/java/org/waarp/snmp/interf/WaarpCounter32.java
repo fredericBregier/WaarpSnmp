@@ -22,7 +22,6 @@ import org.snmp4j.smi.Counter32;
  * Generic Counter32 with update possibility for GoldenGate
  *
  * @author Frederic Bregier
- *
  */
 @SuppressWarnings("serial")
 public abstract class WaarpCounter32 extends Counter32 {
@@ -35,14 +34,12 @@ public abstract class WaarpCounter32 extends Counter32 {
     }
 
     /**
-     * Function to set the data before it is accessed by SNMP4J. This function
-     * MUST call setValue(long)
+     * Function to set the data before it is accessed by SNMP4J. This function MUST call setValue(long)
      */
     protected abstract void setInternalValue();
 
     /**
-     * Function to set the data before it is accessed by SNMP4J. This function
-     * MUST call setValue(long)
+     * Function to set the data before it is accessed by SNMP4J. This function MUST call setValue(long)
      */
     protected abstract void setInternalValue(long value);
 
