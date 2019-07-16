@@ -1,5 +1,5 @@
 /**
- * Interfaces to be implemented by Goldengate Projects
+ * Interfaces to be implemented by Waarp Projects
  *
  * @apiviz.landmark
  */

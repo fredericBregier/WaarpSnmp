@@ -27,7 +27,7 @@ import org.snmp4j.smi.OID;
 import org.snmp4j.smi.Variable;
 
 /**
- * GoldenGate MOScalar implementation
+ * Waarp MOScalar implementation
  *
  * @author Frederic Bregier
  */

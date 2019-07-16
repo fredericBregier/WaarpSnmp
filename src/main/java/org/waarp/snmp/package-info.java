@@ -1,5 +1,5 @@
 /**
- * Classes implementing Main functionalities to be used by Goldengate Projects
+ * Classes implementing Main functionalities to be used by Waarp Projects
  *
  * @apiviz.landmark
  */

@@ -22,7 +22,7 @@ package org.waarp.snmp.interf;
 import org.snmp4j.smi.Counter32;
 
 /**
- * Generic Counter32 with update possibility for GoldenGate
+ * Generic Counter32 with update possibility for Waarp
  *
  * @author Frederic Bregier
  */

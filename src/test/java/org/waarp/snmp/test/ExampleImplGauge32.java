@@ -29,9 +29,11 @@ import org.waarp.snmp.interf.WaarpGauge32;
  */
 @SuppressWarnings("serial")
 public class ExampleImplGauge32 extends WaarpGauge32 {
+  public static final long STARTUP = 42;
+
   public OID oid;
 
-  long _internalValue = 42;
+  long _internalValue = STARTUP;
 
   /**
    *

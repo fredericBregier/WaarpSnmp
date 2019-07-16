@@ -19,9 +19,19 @@
  ******************************************************************************/
 package org.waarp.snmp.test;
 
+import org.junit.Test;
 import org.snmp4j.event.ResponseEvent;
 import org.snmp4j.event.ResponseListener;
 import org.snmp4j.mp.SnmpConstants;
+import org.snmp4j.security.AuthMD5;
+import org.snmp4j.security.AuthSHA;
+import org.snmp4j.security.PrivAES128;
+import org.snmp4j.security.PrivAES192;
+import org.snmp4j.security.PrivAES256;
+import org.snmp4j.security.PrivDES;
+import org.snmp4j.security.USM;
+import org.snmp4j.security.UsmUser;
+import org.snmp4j.smi.OctetString;
 import org.waarp.common.logging.WaarpLogLevel;
 import org.waarp.common.logging.WaarpLoggerFactory;
 import org.waarp.common.logging.WaarpSlf4JLoggerFactory;
@@ -32,33 +42,42 @@ import org.waarp.snmp.utils.WaarpMOScalar;
 import java.io.File;
 import java.io.IOException;
 
+import static org.junit.Assert.*;
+
 /**
  * Test class for Agent and simple Client
  *
  * @author Frederic Bregier
  */
-public class WaarpTestSnmpClientAgent {
+public class WaarpSnmpClientAgentTest {
   static WaarpSnmpAgent agent;
 
   static WaarpSimpleSnmpClient client;
 
   static WaarpImplPrivateMib test;
 
-  public static void main(String[] args) throws Exception {
+  @Test
+  public void allTests() throws Exception {
     WaarpLoggerFactory
         .setDefaultFactory(new WaarpSlf4JLoggerFactory(WaarpLogLevel.DEBUG));
-    if (args.length == 0) {
+    ClassLoader classLoader = WaarpSnmpClientAgentTest.class.getClassLoader();
+    File file = new File(classLoader.getResource("snmpconfig.xml").getFile());
+    if (!file.exists()) {
       System.err.println("Need SnmpConfig file");
-      System.exit(1);
+      return;
     }
-    setUp(args[0]);
+    setUp(file.getAbsolutePath());
     System.out.println("Test SysDescr");
     verifySysDescr();
     System.out.println("Test Table");
     verifyTableContents();
-    Thread.sleep(10000);
+    Thread.sleep(1000);
     sendNotification();
-    Thread.sleep(30000);
+    Thread.sleep(3000);
+    long uptime = agent.getUptime();
+    long systemUptime = agent.getUptimeSystemTime();
+    assertTrue(uptime < systemUptime);
+    testAddUser();
     System.out.println("Stopping");
     tearDown();
   }
@@ -108,6 +127,56 @@ public class WaarpTestSnmpClientAgent {
     test.notifyError("Une seconde alerte", "un second texte d'alerte", 20);
   }
 
+  public void testAddUser() {
+    USM usm = new USM();
+    UsmUser user = new UsmUser(new OctetString("TEST"), AuthSHA.ID, new
+        OctetString("maplesyrup"), PrivDES.ID, new
+                                   OctetString("maplesyrup"));
+    usm.addUser(user.getSecurityName(),
+                usm.getLocalEngineID(), user);
+    user = new UsmUser(new
+                           OctetString("SHA"), AuthSHA.ID,
+                       new OctetString("SHAAuthPassword"),
+                       null, null);
+    usm.addUser(user.getSecurityName(),
+                usm.getLocalEngineID(), user);
+    user = new UsmUser(new
+                           OctetString("SHADES"), AuthSHA.ID, new
+                           OctetString("SHADESAuthPassword"), PrivDES.ID, new
+                           OctetString("SHADESPrivPassword"));
+    usm.addUser(user.getSecurityName(), usm.getLocalEngineID(), user);
+    user = new UsmUser(new OctetString("MD5DES"), AuthMD5.ID, new
+        OctetString("MD5DESAuthPassword"), PrivDES.ID, new
+                           OctetString("MD5DESPrivPassword"));
+    usm.addUser(user.getSecurityName(), usm.getLocalEngineID(), user);
+    user = new UsmUser(new OctetString("SHAAES128"), AuthSHA.ID, new
+        OctetString("SHAAES128AuthPassword"), PrivAES128.ID, new
+                           OctetString("SHAAES128PrivPassword"));
+    usm.addUser(user.getSecurityName(), usm.getLocalEngineID(), user);
+    user = new UsmUser(new OctetString("SHAAES192"), AuthSHA.ID, new
+        OctetString("SHAAES192AuthPassword"), PrivAES192.ID, new
+                           OctetString("SHAAES192PrivPassword"));
+    usm.addUser(user.getSecurityName(), usm.getLocalEngineID(), user);
+    user = new UsmUser(new OctetString("SHAAES256"), AuthSHA.ID, new
+        OctetString("SHAAES256AuthPassword"), PrivAES256.ID, new
+                           OctetString("SHAAES256PrivPassword"));
+    usm.addUser(user.getSecurityName(), usm.getLocalEngineID(), user);
+
+    user = new UsmUser(new OctetString("MD5AES128"), AuthMD5.ID, new
+        OctetString("MD5AES128AuthPassword"), PrivAES128.ID, new
+                           OctetString("MD5AES128PrivPassword"));
+    usm.addUser(user.getSecurityName(), usm.getLocalEngineID(), user);
+    user = new UsmUser(new OctetString("MD5AES192"), AuthMD5.ID, new
+        OctetString("MD5AES192AuthPassword"), PrivAES192.ID, new
+                           OctetString("MD5AES192PrivPassword"));
+    usm.addUser(user.getSecurityName(), usm.getLocalEngineID(), user);
+    user = new UsmUser(new OctetString("MD5AES256"), AuthMD5.ID, new
+        OctetString("MD5AES256AuthPassword"), PrivAES256.ID, new
+                           OctetString("MD5AES256PrivPassword"));
+    usm.addUser(user.getSecurityName(), usm.getLocalEngineID(), user);
+
+  }
+
   public static void tearDown() throws Exception {
     agent.stop();
     client.stop();
@@ -116,6 +185,7 @@ public class WaarpTestSnmpClientAgent {
   private static boolean assertEquals(String a, String b) {
     if (!a.equals(b)) {
       System.err.println("Not Equals! " + a + " and " + b);
+      fail("Should be equals");
       return false;
     }
     System.out.println("Equal: " + a);
@@ -139,5 +209,4 @@ public class WaarpTestSnmpClientAgent {
     }
 
   }
-
 }

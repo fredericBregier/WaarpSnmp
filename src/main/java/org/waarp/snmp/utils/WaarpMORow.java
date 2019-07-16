@@ -29,7 +29,7 @@ import org.waarp.snmp.WaarpMOFactory;
 import org.waarp.snmp.interf.WaarpInterfaceMib;
 
 /**
- * MORow implementation for GoldenGate
+ * MORow implementation for Waarp
  *
  * @author Frederic Bregier
  */

@@ -19,7 +19,6 @@
  ******************************************************************************/
 package org.waarp.snmp.test;
 
-import org.snmp4j.smi.Counter32;
 import org.snmp4j.smi.Counter64;
 import org.snmp4j.smi.Integer32;
 import org.snmp4j.smi.IpAddress;
@@ -31,6 +30,8 @@ import org.snmp4j.smi.SMIConstants;
 import org.snmp4j.smi.TimeTicks;
 import org.snmp4j.smi.Variable;
 import org.waarp.snmp.interf.WaarpInterfaceVariableFactory;
+
+import static junit.framework.TestCase.*;
 
 /**
  * @author Frederic Bregier
@@ -58,11 +59,15 @@ public class WaarpTestVariableFactory implements WaarpInterfaceVariableFactory {
       var = new IpAddress();
       break;
     case SMIConstants.SYNTAX_COUNTER32:
-      var = new Counter32();
+      var = new ExampleImplCounter32(oid);
+      assertTrue(((ExampleImplCounter32) var).getValue() >
+                 ExampleImplCounter32.STARTUP);
       break;
     case SMIConstants.SYNTAX_GAUGE32:
       // case SMIConstants.SYNTAX_UNSIGNED_INTEGER32:
       var = new ExampleImplGauge32(oid);
+      assertTrue(
+          ((ExampleImplGauge32) var).getValue() > ExampleImplGauge32.STARTUP);
       break;
     case SMIConstants.SYNTAX_TIMETICKS:
       var = new TimeTicks();

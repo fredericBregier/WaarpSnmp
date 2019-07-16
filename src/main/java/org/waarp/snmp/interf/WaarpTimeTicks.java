@@ -22,7 +22,7 @@ package org.waarp.snmp.interf;
 import org.snmp4j.smi.TimeTicks;
 
 /**
- * Generic TimeTicks with update possibility for GoldenGate
+ * Generic TimeTicks with update possibility for Waarp
  *
  * @author Frederic Bregier
  */

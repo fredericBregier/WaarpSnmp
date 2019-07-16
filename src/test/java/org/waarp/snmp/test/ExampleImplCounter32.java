@@ -17,52 +17,47 @@
  *  You should have received a copy of the GNU General Public License along with
  *  Waarp . If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-package org.waarp.snmp.interf;
+package org.waarp.snmp.test;
 
-import org.snmp4j.smi.Gauge32;
+import org.snmp4j.smi.OID;
+import org.waarp.snmp.interf.WaarpCounter32;
 
 /**
- * Generic Gauge32 with update possibility for Waarp
+ * Example of WaarpGauge32 Usage
  *
  * @author Frederic Bregier
  */
 @SuppressWarnings("serial")
-public abstract class WaarpGauge32 extends Gauge32 {
-  public WaarpGauge32() {
-    setInternalValue();
+public class ExampleImplCounter32 extends WaarpCounter32 {
+  public static final long STARTUP = 42;
+
+  public OID oid;
+
+  long _internalValue = STARTUP;
+
+  /**
+   *
+   */
+  public ExampleImplCounter32(OID oid) {
+    super();
+    this.oid = oid;
   }
 
   /**
-   * Function to set the data before it is accessed by SNMP4J. This function
-   * MUST call setValue(long)
+   *
    */
-  protected abstract void setInternalValue();
-
-  public WaarpGauge32(long value) {
-    setInternalValue(value);
+  public ExampleImplCounter32(OID oid, long value) {
+    super(value);
+    this.oid = oid;
   }
 
-  /**
-   * Function to set the data before it is accessed by SNMP4J. This function
-   * MUST call setValue(long)
-   */
-  protected abstract void setInternalValue(long value);
-
-  @Override
-  public long getValue() {
-    setInternalValue();
-    return super.getValue();
+  protected void setInternalValue() {
+    _internalValue++;
+    setValue(_internalValue);
   }
 
-  @Override
-  public Object clone() {
-    setInternalValue();
-    return super.clone();
+  protected void setInternalValue(long value) {
+    _internalValue = value;
+    setValue(_internalValue);
   }
-
-  @Override
-  public boolean isDynamic() {
-    return true;
-  }
-
 }
